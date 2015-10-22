@@ -190,7 +190,10 @@
 
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
-                failure([AFErrorFromRFC6749Section5_2Error(responseObject) description]);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-pointer-types"
+                failure(AFErrorFromRFC6749Section5_2Error(responseObject));
+#pragma clang diagnostic pop
             }
 
             return;
@@ -224,7 +227,10 @@
         }
     } failure:^(__unused NSURLSessionDataTask *task, NSError *error) {
         if (failure) {
-            failure([error description]);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-pointer-types"
+            failure(error);
+#pragma clang diagnostic pop
         }
     }];
 
