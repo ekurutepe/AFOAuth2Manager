@@ -190,7 +190,7 @@
 
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
-                failure(AFErrorFromRFC6749Section5_2Error(responseObject));
+                failure([AFErrorFromRFC6749Section5_2Error(responseObject) description]);
             }
 
             return;
@@ -224,7 +224,7 @@
         }
     } failure:^(__unused NSURLSessionDataTask *task, NSError *error) {
         if (failure) {
-            failure(error);
+            failure([error description]);
         }
     }];
 
