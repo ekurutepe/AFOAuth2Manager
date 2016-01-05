@@ -144,7 +144,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSURLSessionDataTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                         scope:(NSString *)scope
-                                                      success:(nulllable void (^)(AFOAuthCredential *credential))success
+                                                      success:(nullable void (^)(AFOAuthCredential *credential))success
                                                       failure:(nullable void (^)(NSError *error))failure;
 
 /**
