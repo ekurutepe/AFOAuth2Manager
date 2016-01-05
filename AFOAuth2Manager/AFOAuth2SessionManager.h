@@ -23,6 +23,7 @@
 #import <AFNetworking/AFHTTPSessionManager.h>
 #import "AFOAuthCredential.h"
 
+NS_ASSUME_NONNULL_BEGIN
 /**
  `AFOAuth2SessionManager` encapsulates common patterns to authenticate against a resource server conforming to the behavior outlined in the OAuth 2.0 specification.
 
@@ -64,7 +65,7 @@
 
  @return The newly-initialized OAuth 2 client
  */
-+ (instancetype)clientWithBaseURL:(NSURL *)url
++ (nullable instancetype)clientWithBaseURL:(NSURL *)url
                          clientID:(NSString *)clientID
                            secret:(NSString *)secret;
 
@@ -78,10 +79,10 @@
 
  @return The newly-initialized OAuth 2 client
  */
-+ (instancetype)clientWithBaseURL:(NSURL *)url
++ (nullable instancetype)clientWithBaseURL:(NSURL *)url
                          clientID:(NSString *)clientID
                            secret:(NSString *)secret
-             sessionConfiguration:(NSURLSessionConfiguration *)configuration;
+             sessionConfiguration:(nullable NSURLSessionConfiguration *)configuration;
 
 
 /**
@@ -93,7 +94,7 @@
 
  @return The newly-initialized OAuth 2 client
  */
-- (instancetype)initWithBaseURL:(NSURL *)url
+- (nullable instancetype)initWithBaseURL:(NSURL *)url
                        clientID:(NSString *)clientID
                          secret:(NSString *)secret;
 
@@ -107,10 +108,10 @@
 
  @return The newly-initialized OAuth 2 client
  */
-- (instancetype)initWithBaseURL:(NSURL *)url
+- (nullable instancetype)initWithBaseURL:(NSURL *)url
                        clientID:(NSString *)clientID
                          secret:(NSString *)secret
-           sessionConfiguration:(NSURLSessionConfiguration *)configuration;
+           sessionConfiguration:(nullable NSURLSessionConfiguration *)configuration;
 
 ///---------------------
 /// @name Authenticating
@@ -175,16 +176,26 @@
                                                       failure:(void (^)(NSError *error))failure;
 
 /**
- Creates and enqueues an `NSURLSessionDataTask` to authenticate against the server with the specified parameters.
+ Creates and enqueues an `NSURLSessionDataTask` to authenticate against the 
+ server with the specified parameters. Returns nil if a valid NSURLRequest can
+ not be created with the given URLString and parameteres
 
  @param URLString The URL string used to create the request URL.
- @param parameters The parameters to be encoded and set in the request HTTP body.
- @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
- @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
+ @param parameters The parameters to be encoded and set in the request HTTP 
+        body.
+ @param success A block object to be executed when the request operation
+        finishes successfully. This block has no return value and takes a single
+        argument: the OAuth credential returned by the server.
+ @param failure A block object to be executed when the request operation 
+        finishes unsuccessfully, or that finishes successfully, but encountered 
+        an error while parsing the response data. This block has no return value
+        and takes a single argument: the error returned from the server.
  */
-- (NSURLSessionDataTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
+- (nullable NSURLSessionDataTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                    parameters:(NSDictionary *)parameters
                                                       success:(void (^)(AFOAuthCredential *credential))success
                                                       failure:(void (^)(NSError *error))failure;
 
 @end
+
+NS_ASSUME_NONNULL_END
