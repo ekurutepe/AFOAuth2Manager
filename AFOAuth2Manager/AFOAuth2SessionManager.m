@@ -104,8 +104,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                      username:(NSString *)username
                                                      password:(NSString *)password
                                                         scope:(NSString *)scope
-                                                      success:(void (^)(AFOAuthCredential *credential))success
-                                                      failure:(void (^)(NSError *error))failure
+                                                      success:(nullable void (^)(AFOAuthCredential *credential))success
+                                                      failure:(nullable void (^)(NSError *error))failure
 {
     NSParameterAssert(username);
     NSParameterAssert(password);
@@ -123,8 +123,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSURLSessionDataTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                         scope:(NSString *)scope
-                                                      success:(void (^)(AFOAuthCredential *credential))success
-                                                      failure:(void (^)(NSError *error))failure
+                                                      success:(nullable void (^)(AFOAuthCredential *credential))success
+                                                      failure:(nullable void (^)(NSError *error))failure
 {
     NSParameterAssert(scope);
 
@@ -138,8 +138,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSURLSessionDataTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                  refreshToken:(NSString *)refreshToken
-                                                      success:(void (^)(AFOAuthCredential *credential))success
-                                                      failure:(void (^)(NSError *error))failure
+                                                      success:(nullable void (^)(AFOAuthCredential *credential))success
+                                                      failure:(nullable void (^)(NSError *error))failure
 {
     NSParameterAssert(refreshToken);
 
