@@ -178,7 +178,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Creates and enqueues an `NSURLSessionDataTask` to authenticate against the 
  server with the specified parameters. Returns nil if a valid NSURLRequest can
- not be created with the given URLString and parameteres
+ not be created with the given URLString and parameters
 
  @param URLString The URL string used to create the request URL.
  @param parameters The parameters to be encoded and set in the request HTTP 
@@ -199,3 +199,4 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+  

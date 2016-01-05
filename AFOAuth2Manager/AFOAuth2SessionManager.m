@@ -154,8 +154,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSURLSessionDataTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                          code:(NSString *)code
                                                   redirectURI:(NSString *)uri
-                                                      success:(void (^)(AFOAuthCredential *credential))success
-                                                      failure:(void (^)(NSError *error))failure
+                                                      success:(nullable void (^)(AFOAuthCredential *credential))success
+                                                      failure:(nullable void (^)(NSError *error))failure
 {
     NSParameterAssert(code);
     NSParameterAssert(uri);
@@ -171,8 +171,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSURLSessionDataTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                    parameters:(NSDictionary *)parameters
-                                                      success:(void (^)(AFOAuthCredential *credential))success
-                                                      failure:(void (^)(NSError  * _Nullable error))failure
+                                                      success:(nullable void (^)(AFOAuthCredential *credential))success
+                                                      failure:(nullable void (^)(NSError * _Nullable error))failure
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     if (!self.useHTTPBasicAuthentication) {
@@ -188,17 +188,15 @@ NS_ASSUME_NONNULL_BEGIN
     NSURLRequest *request = [self.requestSerializer requestWithMethod:@"POST" URLString:url.absoluteString parameters:parameters error:&requestSerializationError];
     
     if (requestSerializationError != nil) {
-        if (failure) {
+        if (failure != nil) {
             failure(requestSerializationError);
         }
         return nil;
     }
     
-
-
-    NSURLSessionDataTask *task = [self dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+    NSURLSessionDataTask *task = [self dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id _Nullable responseObject, NSError * _Nullable error) {
         if (error != nil) {
-            if (failure) {
+            if (failure != nil) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wincompatible-pointer-types"
                 failure(error);
@@ -207,7 +205,7 @@ NS_ASSUME_NONNULL_BEGIN
             return;
         }
         if (!responseObject) {
-            if (failure) {
+            if (failure != nil) {
                 failure(nil);
             }
             
@@ -215,22 +213,21 @@ NS_ASSUME_NONNULL_BEGIN
         }
         
         if ([responseObject valueForKey:@"error"]) {
-            if (failure) {
+            if (failure != nil) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wincompatible-pointer-types"
                 failure(AFErrorFromRFC6749Section5_2Error(responseObject));
 #pragma clang diagnostic pop
-            }
-            
-            return;
+            }    
+           return;
         }
+        
         NSString *refreshToken = [responseObject valueForKey:@"refresh_token"];
         if (!refreshToken || [refreshToken isEqual:[NSNull null]]) {
             refreshToken = [parameters valueForKey:@"refresh_token"];
         }
         
         AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
-        
         
         if (refreshToken) { // refreshToken is optional in the OAuth2 spec
             [credential setRefreshToken:refreshToken];
@@ -247,10 +244,9 @@ NS_ASSUME_NONNULL_BEGIN
             [credential setExpiration:expireDate];
         }
         
-        if (success) {
+        if (success != nil) {
             success(credential);
         }
-
     }];
     
     [task resume];
